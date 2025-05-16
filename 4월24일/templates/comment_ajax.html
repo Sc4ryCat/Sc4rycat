@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX 댓글 시스템</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>💬 댓글 작성</h2>
+
+<form id="commentForm">
+    <textarea id="commentInput" name="content" rows="4" cols="50" placeholder="댓글을 입력하세요"></textarea><br>
+    <button type="submit">댓글 등록</button>
+</form>
+
+<hr>
+
+<h3>📃 댓글 목록</h3>
+<div id="commentList">
+    <!-- 댓글이 여기에 표시됨 -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        // 댓글 목록 불러오기
+        loadComments();
+
+        // 댓글 등록 이벤트 처리
+        $("#commentForm").on("submit", function (e) {
+            e.preventDefault();
+
+            const commentText = $("#commentInput").val();
+
+            $.post("/add_comment", { content: commentText }, function (response) {
+                alert(response);  
+                $("#commentInput").val("");  
+                loadComments();              
+            });
+        });
+
+        // 댓글 목록 가져오기 함수
+        function loadComments() {
+            $.get("/get_comments", function (data) {
+                let html = "";
+                data.forEach(function (comment) {
+                    html += "<div class='comment'>" + comment + "</div>";
+                });
+                $("#commentList").html(html);
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

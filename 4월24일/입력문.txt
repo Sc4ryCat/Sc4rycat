@@ -1,0 +1,2 @@
+2초 간격으로 계속해서 get_data를 호출
+setInterval (function() {GetData();}, 2000);

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>XSS 방어 예제</title>
+
+    <style>
+        table, td, th {
+            border: 1px solid black;
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+        // 🔴 ❌ 취약점 제거: reflected_xss_string을 직접 자바스크립트 변수에 삽입하지 않음
+
+        $(document).ready(function(){
+            // 🔷 HTML에 직접 반영되므로 자동 이스케이프된 값만 처리
+            var reflected_xss_string = "{{ reflected_xss_string }}";  // 🔷 safe 제거
+            $("#inputText").val(reflected_xss_string);
+            $("#reflected_xss_string").text(reflected_xss_string);   // 🔷 .html() → .text() 로 변경
+        });
+
+        function GetData() {
+            var my_id = "tom";
+            $.ajax({
+                url : '/get_data',
+                type : 'GET',
+                data : {id: my_id},
+                success: function(res){
+                    $("#spanName").text(res);  // 🔷 .html() → .text() (보안상 안전)
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+    <form id="xssText" action="/" method="get">
+        <fieldset>
+            <legend>XSS 실습 (방어 버전)</legend>
+            XSS 스크립트:
+            <input type="text" id="inputText" name="inputText">
+            <input type="submit" name="button" value="실행">
+        </fieldset>
+    </form>
+
+    <h4>스크립트 표시</h4>
+    <hr>
+    [reflected_xss]
+    <div id="reflected_xss_string"></div>
+
+    <h4>서버 응답</h4>
+    <div id="spanName"></div>  <!-- 🔷 Ajax 결과 출력용 -->
+</body>
+</html>

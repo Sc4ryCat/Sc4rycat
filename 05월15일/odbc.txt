@@ -1,0 +1,9 @@
+conn_str = (
+    "DRIVER={ODBC Driver 17 for SQL Server};"
+    "SERVER=localhost;"             
+    "DATABASE=mytest;"
+    "UID=test;"                   
+    "PWD=test;"              
+    "TrustServerCertificate=yes;"
+    # PORT=1433  1433은 SQL Server가 클라이언트 연결을 수신하는 기본 포트 번호 안써도 됨
+)

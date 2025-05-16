@@ -1,0 +1,12 @@
+POST /upload_process HTTP/1.1
+Host: 127.0.0.1:5000
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJ7gxRBL8BCQ3671L
+
+------WebKitFormBoundaryJ7gxRBL8BCQ3671L
+Content-Disposition: form-data; name="uploaded_file"; filename="code.exe"
+Content-Type: image/png
+
+error~~~~!!!!!!
+
+
+------WebKitFormBoundaryJ7gxRBL8BCQ3671L--

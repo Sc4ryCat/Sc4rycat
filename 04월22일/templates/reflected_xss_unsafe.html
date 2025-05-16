@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <style>
+            table, td, th {
+                border: 1px solid black;
+                text-align: center;
+            }
+            table {
+                border-collapse: collapse;
+            }
+        </style>
+        <script src="http://code.jquery.com/jquery-3.6.0.min.js" ></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            // 안전하게 JSON 문자열로 처리
+            var reflected_xss_string = {{ reflected_xss_string|tojson }};
+            $("#inputText").val(reflected_xss_string);
+            $("#reflected_xss_string").html(reflected_xss_string);
+            });
+        </script>
+        <title>XSS</title>
+</head>
+    <body>
+        <form id = "xssText" action = "/" method = "get">
+            <fieldset>
+                <legend>XSS 실습</legend>
+                XSS 스크립트:
+                <input type="text" id="inputText" name="inputText">
+                <input type="submit" name="button"  value="실행">
+            </fieldset>
+        </form>
+        <h4>스크립트 표시</h4>
+        <hr>
+        [reflected_xss]
+        <div id ="reflected_xss_string"> </div>
+    </body>
+</html>

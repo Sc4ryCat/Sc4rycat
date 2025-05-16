@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Stored XSS DB 취약 실습 </title>
+</head>
+<body>
+    <h2>저장형 XSS 실습 - 취약 버전</h2>
+    <form method="post" action="/">
+        <textarea name="comment" rows="4" cols="50" placeholder="댓글 입력"></textarea><br>
+        <button type="submit">저장</button>
+    </form>
+    <hr>
+<!--    -->
+<!--    comment = ["테스트입니다",-->
+<!--               "12121313",-->
+<!--               "test"]-->
+
+    <h4>저장된 댓글</h4>
+    {% for c in comments %}
+        <div style="border: 1px solid red; padding: 5px; margin: 5px;">
+            <!-- 방어 없이 HTML 그대로 출력 → 스크립트 실행됨 -->
+            {{ c | safe }}
+        </div>
+    {% endfor %}
+</body>
+</html>

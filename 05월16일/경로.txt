@@ -1,0 +1,1 @@
+C:\Users\user\AppData\Local\Programs\Python\Python38\Lib\site-packages\json_logic

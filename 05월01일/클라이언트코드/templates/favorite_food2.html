@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>좋아하는 음식 저장하기</title>
+</head>
+<body>
+    <h1>좋아하는 음식: {{ food }}</h1>
+
+    <form method="POST" action="/">
+        <input type="text" name="food" placeholder="좋아하는 음식 입력" required>
+        <button type="submit">저장하기</button>
+    </form>
+
+    <form method="POST" action="/delete_cookie">
+        <button type="submit">쿠키 삭제하기</button>
+    </form>
+</body>
+</html>

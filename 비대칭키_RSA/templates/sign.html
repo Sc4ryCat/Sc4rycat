@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전자서명 테스트</title>
+</head>
+<body>
+    <h2>전자서명 실습 (RSA + SHA-256)</h2>
+
+    <form method="POST">
+        <label>메시지 입력:</label><br>
+        <textarea name="message" rows="5" cols="60">{{ message }}</textarea><br><br>
+
+        <label>전자서명 (base64):</label><br>
+        <textarea name="signature" rows="4" cols="60">{{ signature }}</textarea><br><br>
+
+        <button name="action" value="sign"> 서명 생성</button>
+        <button name="action" value="verify">서명 검증</button>
+    </form>
+
+    {% if result %}
+        <h3>결과:</h3>
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>

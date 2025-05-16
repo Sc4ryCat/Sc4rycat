@@ -1,0 +1,80 @@
+﻿<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-3.6.0.min.js" ></script>      
+        <script type="text/javascript">
+            $(document).ready(function(){
+                my_id = "{{customer_id}}";
+                withdraw_money = "{{withdraw_money}}";
+                get_cookie = "{{get_cookie}}";
+
+                result_cookie = "1. 당신의 쿠키는: " + get_cookie;
+                result_id = "2. 당신의 아이디는: " + my_id;
+                result_money = "3. 인출 금액: " + withdraw_money;
+
+                $("#myID").val(my_id);
+                $("#requestMoney").val(withdraw_money);
+                $("#resultCookie").html(result_cookie);
+                $("#resultID").html(result_id);
+                $("#resultMoney").html(result_money);
+
+                $("#sendForm").click(function(){
+                    var customer_id = $("#myID").val();
+                    var withdraw_money = $("#requestMoney").val();
+    
+                    if (withdraw_money == null || withdraw_money == "") {
+                        alert("찾으실 금액을 넣어주세요!");
+                        return false;
+                    }
+                    else if (withdraw_money > 10000) {
+                        alert("10000원 이상 출금 안됨");
+                        return false;
+                    }
+
+                    if (customer_id == null || customer_id == "") {
+                        alert("아이디를 넣어주세요");
+                        return false;
+                    }
+                });
+
+                $("#showMyMoney").click(function() {          
+                    $.ajax({
+                        url: "/get_balance",
+                        type: "POST",
+                        dataType: "json",
+                        data: JSON.stringify({"customer_id":get_cookie}),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function(data){
+                        $("#balance").html(data.balance);
+                        }
+                    });
+                });
+
+            });
+        </script>
+        <title>클라이언트 코드 실습</title>
+</head>
+    <body>
+        <form id = "getMoney" action = "/" method = "post">
+            <fieldset>
+                <legend>클라이언트 코드 실습</legend>
+                아이디: 
+                <input type="text" id="myID" name="myID" size = "10" maxlength="5">
+                &nbsp;
+                출금 금액: 
+                <input type="text" id="requestMoney" name="requestMoney" size = "5">
+                <input type="submit" name="button" id="sendForm" value="인출하기">
+                <br><br>
+                <input type="button" id="showMyMoney" value="잔고 보기">
+                : <span id="balance"></span>
+            </fieldset>
+        </form>
+
+    
+        <h4>결과</h4>
+        <hr>
+        <div id ="resultCookie"> </div>
+        <div id ="resultID"> </div>
+        <div id ="resultMoney"> </div>
+
+    </body>
+</html>

@@ -1,0 +1,47 @@
+from flask import Flask,request,render_template
+# 파일 이름을 안전하게 처리하기 위한 모듈
+from werkzeug.utils import secure_filename
+import os  # 파일 및 디렉터리 경로를 다루기 위한 모듈
+
+app = Flask(__name__)
+
+# 업로드 파일을 저장할 폴더
+upload_folder = './uploads'
+
+# 업로드 허용 확장자 리스트(화이트리스트 방식)
+allowed_extentions = {'txt','jpg','png','pdf'}
+
+# 업로드 폴더가 없으면 자동으로 생성해 주세요
+os.makedirs(upload_folder, exist_ok=True)
+# flask 설정에 업로드 폴더 경로 저장
+app.config['UPLOAD_FOLDER'] = upload_folder
+# return '.' in filename : 먼저 파일 이름에 . 포함되어있는지 확인 ex) test.jpg
+# rsplit('.',1): 오른쪽에서 한번 나누어주세요 ["test","jpg"] [1] -> jpg
+# .lower() 대소문자 구분없이 비교하기 위해서 jpg, JPG
+# in allowed_extentions 추출한 확장자가 허용된 확장자 리스트에 포함되어있는지 확인
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_extentions
+# return 값은 true,false
+@app.route("/upload", methods=["GET","POST"])
+# @app.route("/upload")
+def upload():
+    return render_template('upload_form.html')
+
+@app.route("/upload_process", methods=["POST"])
+def upload_process():
+
+        # name = "uploaded_file"
+        file = request.files['uploaded_file']
+        # 사용자가 존재하고 확장자가 허용되었는지 확인
+        if file and allowed_file(file.filename):
+            file_name = secure_filename(file.filename) # 안전하게 저장
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'],file_name))
+        # 파일 이름을 안전하게 만든뒤 업로드 폴더에 저장
+        # file.save(os.path.join)
+            return '안전한 업로드 완료'
+        else:
+            return '허용되지 않는 파일 형식' # 확장자가 허용되지 않으면 차단
+
+if __name__ == "__main__":
+# 디버그 모드로 127.0.0.1:5000에서 실행
+      app.run(debug=True)
